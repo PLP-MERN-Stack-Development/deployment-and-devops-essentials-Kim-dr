@@ -276,7 +276,11 @@ npm run build
 Visuals of the deployments: 
 
 ### CI/CD Pipeline
-![GitHub Actions](./screenshots/github-actions.png)
+![GitHub Actions - Backend CD](./screenshots/backendcd.png)
+![GitHub Actions - Backend CI](./screenshots/backendci.png)
+![GitHub Actions - Frontend CD](./screenshots/frontendcd.png)
+![GitHub Actions - Frontend CI](./screenshots/frontendci.png)
+
 
 ### Deployment Status
 ![Render Dashboard](./screenshots/render-frontend-dashboard.png)
