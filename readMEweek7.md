@@ -289,6 +289,9 @@ Visuals of the deployments:
 ### Application
 ![Todo App](./screenshots/app-screenshot.png)
 
+### Monitoring status
+![Uptime Robot](./screenshots/monitoring.png)
+
 ## 🔐 Security Features
 
 - JWT-based authentication
