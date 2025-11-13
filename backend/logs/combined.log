@@ -80,3 +80,5 @@
 {"level":"info","message":"MongoDB Connected: ac-p3k4pyc-shard-00-01.4ijk96j.mongodb.net","service":"mern-todo-api","timestamp":"2025-11-13 12:21:33"}
 {"level":"info","message":"Server running in development mode on port 5000","service":"mern-todo-api","timestamp":"2025-11-13 12:54:08"}
 {"level":"info","message":"MongoDB Connected: ac-p3k4pyc-shard-00-01.4ijk96j.mongodb.net","service":"mern-todo-api","timestamp":"2025-11-13 12:54:09"}
+{"level":"info","message":"Server running in production mode on port 5000","service":"mern-todo-api","timestamp":"2025-11-13 13:28:03"}
+{"level":"info","message":"MongoDB Connected: ac-p3k4pyc-shard-00-00.4ijk96j.mongodb.net","service":"mern-todo-api","timestamp":"2025-11-13 13:28:04"}

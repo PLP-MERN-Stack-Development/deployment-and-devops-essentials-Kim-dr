@@ -4,9 +4,8 @@ A production-ready MERN (MongoDB, Express, React, Node.js) todo application with
 
 ## 🚀 Live Demo
 
-- **Frontend URL**: https://deployment-and-devops-essentials-kim-dr-2.onrender.com/login
-- **Backend API**: https://deployment-and-devops-essentials-kim-dr-1.onrender.com
-  
+- **Frontend URL**: `https://your-app.vercel.app` (Update after deployment)
+- **Backend API**: `https://your-api.onrender.com` (Update after deployment)
 - **API Documentation**: `https://your-api.onrender.com/api/health`
 
 ## ✨ Features
@@ -273,13 +272,14 @@ npm run build
 ```
 
 ## 📸 Screenshots
+Visuals of the deployments: 
 
 ### CI/CD Pipeline
 ![GitHub Actions](./screenshots/github-actions.png)
 
 ### Deployment Status
-![Render Dashboard](./screenshots/render-dashboard.png)
-![Vercel Dashboard](./screenshots/vercel-dashboard.png)
+![Render Dashboard](./screenshots/render-frontend-dashboard.png)
+![Vercel Dashboard](./screenshots/render-dashboard.png)
 
 ### Application
 ![Todo App](./screenshots/app-screenshot.png)
@@ -317,7 +317,4 @@ Your Name - [GitHub Profile](https://github.com/Kim-dr/Kimberly)
 - All open-source contributors
 
 ---
-
-
-**Note**: Remember to update this README with your actual deployment URLs and screenshots after deployment!
 
