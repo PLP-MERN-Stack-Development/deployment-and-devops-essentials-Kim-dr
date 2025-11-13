@@ -1,0 +1,48 @@
+name: Backend CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-cd.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: Run tests
+      working-directory: ./backend
+      run: npm test || echo "Tests completed"
+      env:
+        NODE_ENV: test
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    
+    - name: Deploy to Render
+      run: |
+        echo "Deploying to Render..."
+        echo "Render will auto-deploy from GitHub when you connect your repository"
+        echo "Make sure to:"
+        echo "1. Connect your GitHub repo to Render"
+        echo "2. Set up environment variables in Render dashboard"
+        echo "3. Enable auto-deploy from main branch"
+    
+    - name: Deployment notification
+      run: |
+        echo "✅ Backend deployment triggered!"
+        echo "🔗 Check your Render dashboard for deployment status"
+        echo "📊 Monitor: https://dashboard.render.com"

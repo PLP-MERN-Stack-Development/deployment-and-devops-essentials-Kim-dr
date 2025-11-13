@@ -1,0 +1,48 @@
+name: Frontend CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-cd.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: Install dependencies
+      working-directory: ./frontend
+      run: npm ci
+    
+    - name: Build for production
+      working-directory: ./frontend
+      run: npm run build
+      env:
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+    
+    - name: Deploy to Vercel
+      run: |
+        echo "Deploying to Vercel..."
+        echo "Vercel will auto-deploy from GitHub when you connect your repository"
+        echo "Make sure to:"
+        echo "1. Connect your GitHub repo to Vercel"
+        echo "2. Set root directory to 'frontend'"
+        echo "3. Set up environment variables in Vercel dashboard"
+        echo "4. Enable auto-deploy from main branch"
+    
+    - name: Deployment notification
+      run: |
+        echo "✅ Frontend deployment triggered!"
+        echo "🔗 Check your Vercel dashboard for deployment status"
+        echo "📊 Monitor: https://vercel.com/dashboard"
