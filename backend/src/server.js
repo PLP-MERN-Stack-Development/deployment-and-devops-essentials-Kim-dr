@@ -16,16 +16,19 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+// ===== NEW LINE =====
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Initialize Sentry for error tracking
 if (process.env.SENTRY_DSN) {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'development',
-    tracesSampleRate: 1.0,
-  });
-  app.use(Sentry.Handlers.requestHandler());
-  app.use(Sentry.Handlers.tracingHandler());
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    // ===== MODIFIED LINE =====
+    environment: NODE_ENV,
+    tracesSampleRate: 1.0,
+  });
+  app.use(Sentry.Handlers.requestHandler());
+  app.use(Sentry.Handlers.tracingHandler());
 }
 
 // Connect to MongoDB
@@ -34,26 +37,43 @@ connectDB();
 // Middleware
 app.use(helmet()); // Security headers
 
-// ===== THIS IS THE UPDATED CORS SECTION =====
+// ===== THIS IS THE NEW, SAFER CORS SECTION =====
+// ===== IT IS DIFFERENT FROM YOURS =====
 const allowedOrigins = [
-  'http://localhost:5173', // Your local dev frontend
-  'https://deployment-and-devops-essentials-kim-dr-2.onrender.com' // Your deployed frontend
+  'http://localhost:5173', // Your local dev frontend
+  'https://deployment-and-devops-essentials-kim-dr-2.onrender.com' // Your deployed frontend
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or Postman)
-    if (!origin) return callback(null, true);
+// In development, use simpler CORS
+if (NODE_ENV === 'development') {
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  }));
+} else {
+  // In production, use the strict allow-list
+  app.use(cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like Render's health check, Postman)
+      // 'origin' will be 'undefined' or 'null' for these.
+      // ===== THIS IS THE CRUCIAL FIX =====
+      if (!origin || origin === 'null') {
+        return callback(null, true);
+      }
 
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true // <-- This was in your original config, it's important to keep!
-}));
+      // Check if the origin is in our allowed list
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+        return callback(new Error(msg), false);
+      }
+      
+      return callback(null, true);
+    },
+    credentials: true
+  }));
+}
 // ===== END OF UPDATED CORS SECTION =====
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,21 +87,21 @@ app.use('/api/todos', todoRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ 
-    message: 'MERN Todo API',
-    version: '1.0.0',
-    status: 'running',
-    endpoints: {
-      health: '/api/health',
-      auth: '/api/auth',
-      todos: '/api/todos'
-    }
-  });
+  res.json({
+    message: 'MERN Todo API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      todos: '/api/todos'
+    }
+  });
 });
 
 // Sentry error handler (must be before other error handlers)
 if (process.env.SENTRY_DSN) {
-  app.use(Sentry.Handlers.errorHandler());
+  app.use(Sentry.Handlers.errorHandler());
 }
 
 // Error handling middleware (must be last)
@@ -89,8 +109,9 @@ app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
-  logger.info(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  // ===== MODIFIED LINE =====
+  logger.info(`Server running in ${NODE_ENV} mode on port ${PORT}`);
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
 
 export default app;
