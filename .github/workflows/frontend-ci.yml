@@ -42,14 +42,14 @@ jobs:
       working-directory: ./frontend
       run: npm run build
       env:
-        # ===== THIS LINE IS NOW FIXED =====
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
         VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: frontend-build
+        # ===== THIS IS THE LINE THAT IS NOW FIXED =====
+        name: frontend-build-${{ matrix.node-version }}
         path: frontend/dist
         retention-days: 7
 
